@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+venv/
+
+# Data and logs - NEVER COMMIT THESE
+data/
+logs/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Secrets
+.env
+*.session
+profiles.yml
+
+# IDE
+.vscode/
+.idea/
+.DS_Store
+
+# DBT
+target/
+
+# Model files
+*.pt
