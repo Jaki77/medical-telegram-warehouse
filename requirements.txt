@@ -20,3 +20,10 @@ python-jose[cryptography]
 passlib[bcrypt]
 redis
 httpx
+dagster
+dagster-webserver
+dagster-postgres
+dagster-dbt
+dagster-docker
+dagster-cron
+dagit
