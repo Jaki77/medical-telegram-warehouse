@@ -1,0 +1,39 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    git \
+    wget \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements
+COPY requirements_dagster.txt .
+RUN pip install --no-cache-dir -r requirements_dagster.txt
+
+# Copy application code
+COPY dagster/ ./dagster/
+COPY src/ ./src/
+COPY api/ ./api/
+COPY dbt_medical/ ./dbt_medical/
+COPY config/ ./config/
+COPY docker-compose.yml .
+
+# Create necessary directories
+RUN mkdir -p logs reports data models
+
+# Create Dagster home directory
+ENV DAGSTER_HOME=/app/dagster_home
+RUN mkdir -p $DAGSTER_HOME
+
+# Copy Dagster configuration
+COPY dagster.yaml $DAGSTER_HOME/
+
+# Expose port
+EXPOSE 3000
+
+# Run Dagster
+CMD ["dagster", "dev", "-f", "dagster/repository.py", "-h", "0.0.0.0", "-p", "3000"]

@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  dagster:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.dagster
+    container_name: medical-dagster
+    ports:
+      - "3000:3000"
+    environment:
+      - DAGSTER_HOME=/app/dagster_home
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=medical_warehouse
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres123
+      - TELEGRAM_API_ID=${TELEGRAM_API_ID}
+      - TELEGRAM_API_HASH=${TELEGRAM_API_HASH}
+      - TELEGRAM_PHONE_NUMBER=${TELEGRAM_PHONE_NUMBER}
+    volumes:
+      - ./dagster:/app/dagster
+      - ./src:/app/src
+      - ./api:/app/api
+      - ./dbt_medical:/app/dbt_medical
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./reports:/app/reports
+      - dagster_storage:/app/dagster_home/storage
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - medical-network
+
+  postgres:
+    image: postgres:15
+    container_name: medical_warehouse_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+      POSTGRES_DB: medical_warehouse
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - medical-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: medical-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - medical-network
+
+networks:
+  medical-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
+  dagster_storage:
