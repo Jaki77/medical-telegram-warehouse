@@ -23,3 +23,17 @@ sources:
             description: "Number of views on the message"
           - name: forwards
             description: "Number of times message was forwarded"
+            
+      - name: image_detections
+        description: "Raw YOLO detection results"
+        columns:
+          - name: message_id
+            description: "Message identifier"
+          - name: channel_name
+            description: "Telegram channel name"
+          - name: detected_objects
+            description: "Array of detected object names"
+          - name: confidence_scores
+            description: "Array of confidence scores for each detection"
+          - name: image_category
+            description: "Classification of image (promotional, product_display, etc.)"

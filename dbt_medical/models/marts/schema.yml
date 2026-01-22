@@ -57,3 +57,30 @@ models:
         description: "Number of views on the message"
         tests:
           - not_null
+  - name: fct_image_detections
+    description: "Fact table for YOLO image detection results"
+    columns:
+      - name: detection_key
+        description: "Surrogate key for detection"
+        tests:
+          - unique
+          - not_null
+      - name: channel_key
+        description: "Foreign key to dim_channels"
+        tests:
+          - relationships:
+              to: ref('dim_channels')
+              field: channel_key
+      - name: date_key
+        description: "Foreign key to dim_dates"
+        tests:
+          - relationships:
+              to: ref('dim_dates')
+              field: date_key
+      - name: image_category
+        description: "Classification of image content"
+      - name: avg_confidence
+        description: "Average confidence score of detections"
+        tests:
+          - accepted_values:
+              values: ['0', '0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1.0']
