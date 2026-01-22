@@ -6,3 +6,8 @@ sqlalchemy
 psycopg2-binary
 fastapi
 uvicorn
+ultralytics
+opencv-python
+Pillow
+matplotlib
+seaborn
