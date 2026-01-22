@@ -11,3 +11,12 @@ opencv-python
 Pillow
 matplotlib
 seaborn
+fastapi
+uvicorn[standard]
+python-multipart
+pydantic
+pydantic-settings
+python-jose[cryptography]
+passlib[bcrypt]
+redis
+httpx
